@@ -7,9 +7,12 @@ const button = document.querySelector("button");
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     const submittedUsername = usernameInput.value;
-    getUser(submittedUsername)
-    .then(getStarredProjects)
-    .then(console.log)
+    const combined = Promise.all([
+    Promise.resolve(getUser(submittedUsername)),    
+    Promise.resolve(getStarredProjects(submittedUsername))
+])
+    .then(combined => console.log(combined))
+    // .then(console.log)
     .catch(console.error)
 });
 
@@ -21,10 +24,8 @@ function getUser(username) {
 
 }
 
-
-
-function getStarredProjects(user) {
-   return fetch(user.repos_url)
+function getStarredProjects(username) {
+return fetch(`${baseRequest}${username}/starred`)
    .then(response => response.json())
 }
 
