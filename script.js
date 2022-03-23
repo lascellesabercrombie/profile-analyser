@@ -9,10 +9,10 @@ form.addEventListener("submit", (e) => {
     const submittedUsername = usernameInput.value;
     const combined = Promise.all([
     Promise.resolve(getUser(submittedUsername)),    
-    Promise.resolve(getStarredProjects(submittedUsername))
+    Promise.resolve(getStarredProjects(submittedUsername)),
+    Promise.resolve(getUserEvents(submittedUsername))
 ])
     .then(combined => console.log(combined))
-    // .then(console.log)
     .catch(console.error)
 });
 
@@ -29,9 +29,14 @@ return fetch(`${baseRequest}${username}/starred`)
    .then(response => response.json())
 }
 
-// function getUserEvents(username) {
-//     return fetch(`${baseRequest}${username}/events`).then(response => response.json());
-// }
+function getUserEvents(username) {
+    return fetch(`${baseRequest}${username}/events`)
+    .then(response => response.json());
+}
+//this could be modified by changing /events to /events?page=123&per_page=50
+
+
+
 
 // getUser("oliverjam")
 // // .then(getStarredProjects)
