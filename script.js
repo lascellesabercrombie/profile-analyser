@@ -8,9 +8,11 @@ form.addEventListener("submit", (e) => {
     e.preventDefault();
     const submittedUsername = usernameInput.value;
     const combined = Promise.all([
-    Promise.resolve(getUser(submittedUsername)),    
+    Promise.resolve(getUser(submittedUsername)),
+    // .then((user) => Promise.resolve(getPopularity(user))),    
     Promise.resolve(getStarredProjects(submittedUsername)),
-    Promise.resolve(getUserEvents(submittedUsername))
+    Promise.resolve(getUserEvents(submittedUsername)),
+    
 ])
     .then(combined => console.log(combined))
     .catch(console.error)
@@ -27,6 +29,7 @@ function getUser(username) {
 function getStarredProjects(username) {
 return fetch(`${baseRequest}${username}/starred`)
    .then(response => response.json())
+
 }
 
 function getUserEvents(username) {
@@ -35,7 +38,32 @@ function getUserEvents(username) {
 }
 //this could be modified by changing /events to /events?page=123&per_page=50
 
+// function getPopularity(user) {
+//     let forkArray = [];
+//     let starArray = [];
+//     let watchArray = []
+//     fetch(user.repos_url)
+//     .then(response => {response = response.json(); return response})
+//     .then(response => {
+//         response.forEach(response => {
+//         forkArray.push(response.forks_count);
+//         starArray.push(response.stargazers_count);
+//         watchArray.push(response.watchers_count)
+//         })
+//         return [forkArray, starArray, watchArray];
+//     })
+//     .then(array => {
+//         let sum = 0;
+//         for (let i = 0; i< array.length; i++){
+//             for (let i = 0; i< array.length; i++) {
+//                 sum += array[j];
+//             }
 
+//         }
+//     })
+   
+    
+// }
 
 
 // getUser("oliverjam")
