@@ -24,9 +24,7 @@ form.addEventListener("submit", (e) => {
 
 function getUser(username) {
     return fetch(`${baseRequest}${username}`)
-    .then(response => {
-        // console.log(response.json());
-        return response.json();})
+    .then(response => response.json())
     .then(json => topInfoRenderer(json))
 }
 
@@ -37,7 +35,7 @@ function topInfoRenderer(json) {
         domFragment.querySelector("h2").textContent = json.login;
         domFragment.querySelector("img").src = json.avatar_url;
         domFragment.querySelector(".repo-number").textContent = json.public_repos;
-        domFragment.querySelector(".github-link").textContent = json.url;
+        domFragment.querySelector(".github-link").textContent = json.html_url;
         if (json.twitter_username !== null) {
             domFragment.querySelector(".twitter-link").textContent = json.twitter_username;
         }
