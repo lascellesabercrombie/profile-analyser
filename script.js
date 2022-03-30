@@ -5,6 +5,7 @@ const form = document.querySelector("form");
 const button = document.querySelector("button");
 
 const topInfoArea = document.querySelector(".top-info-area");
+const starredArea = document.querySelector(".starred-area");
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -48,8 +49,34 @@ function topInfoRenderer(json) {
 function getStarredProjects(username) {
 return fetch(`${baseRequest}${username}/starred`)
    .then(response => response.json())
-
+   .then(json => starredRenderer(json));
 }
+
+function starredRenderer(json) {
+    console.log(json);
+    if (json.length < 1) {
+        const noStars = document.querySelector('.no-stars');
+        domFragmentNoStars = noStars.content.cloneNode(true);
+        starredArea.appendChild(domFragmentNoStars);
+    }
+    else{
+    const templateTable = document.querySelector('.starred-table');
+    const templateRow = document.querySelector('.starred-row');
+    domFragmentTable = templateTable.content.cloneNode(true);
+    const tbody = domFragmentTable.querySelector("tbody");
+    json.forEach(project => {
+    domFragmentRow = templateRow.content.cloneNode(true);
+    td = domFragmentRow.querySelectorAll("td")
+        td[0].querySelector("a").textContent = project.owner.login;
+        td[0].querySelector("a").href = project.owner.html_url;
+        td[1].querySelector("a").textContent = project.name;
+        td[1].querySelector("a").href = project.html_url;
+    tbody.appendChild(domFragmentRow);
+    })
+starredArea.appendChild(domFragmentTable);
+}
+}
+
 
 function getUserEvents(username) {
     return fetch(`${baseRequest}${username}/events`)
