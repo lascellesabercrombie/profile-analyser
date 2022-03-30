@@ -4,6 +4,8 @@ const baseRequest = `https://api.github.com/users/`
 const form = document.querySelector("form");
 const button = document.querySelector("button");
 
+const topInfoArea = document.querySelector(".top-info-area");
+
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     const submittedUsername = usernameInput.value;
@@ -22,8 +24,27 @@ form.addEventListener("submit", (e) => {
 
 function getUser(username) {
     return fetch(`${baseRequest}${username}`)
-    .then((response => response.json()))
+    .then(response => {
+        // console.log(response.json());
+        return response.json();})
+    .then(json => topInfoRenderer(json))
+}
 
+function topInfoRenderer(json) {
+        console.log(json);
+        const template = document.querySelector('.top-info');
+        domFragment = template.content.cloneNode(true);
+        domFragment.querySelector("h2").textContent = json.login;
+        domFragment.querySelector("img").src = json.avatar_url;
+        domFragment.querySelector(".repo-number").textContent = json.public_repos;
+        domFragment.querySelector(".github-link").textContent = json.url;
+        if (json.twitter_username !== null) {
+            domFragment.querySelector(".twitter-link").textContent = json.twitter_username;
+        }
+        if (json.blog.length > 0) {
+            domFragment.querySelector(".blog-link").textContent = json.blog;
+        }
+        topInfoArea.appendChild(domFragment);
 }
 
 function getStarredProjects(username) {
@@ -37,6 +58,9 @@ function getUserEvents(username) {
     .then(response => response.json());
 }
 //this could be modified by changing /events to /events?page=123&per_page=50
+
+
+
 
 // function getPopularity(user) {
 //     let forkArray = [];
