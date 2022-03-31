@@ -6,6 +6,10 @@ const button = document.querySelector("button");
 
 const topInfoArea = document.querySelector(".top-info-area");
 const starredArea = document.querySelector(".starred-area");
+const recentActivityArea = document.querySelector(".recent-activity-area");
+
+
+const Chart = require('chart.js')
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -78,10 +82,18 @@ starredArea.appendChild(domFragmentTable);
 }
 
 
-function getUserEvents(username) {
-    return fetch(`${baseRequest}${username}/events`)
-    .then(response => response.json());
-}
+// function getUserEvents(username) {
+//     return fetch(`${baseRequest}${username}/events`)
+//     .then(response => response.json());
+// }
+
+// function eventRenderer(json) {
+//     new Chart(recentActivityArea.querySelector("#recent-activity-chart"),
+//         type: 'bar'
+    
+//     )
+// }
+
 //this could be modified by changing /events to /events?page=123&per_page=50
 
 
