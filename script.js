@@ -9,7 +9,7 @@ const starredArea = document.querySelector(".starred-area");
 const recentActivityArea = document.querySelector(".recent-activity-area");
 
 
-const Chart = require('chart.js')
+// const Chart = require('chart.js')
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -17,7 +17,7 @@ form.addEventListener("submit", (e) => {
     const combined = Promise.all([
     Promise.resolve(getUser(submittedUsername)),
     // .then((user) => Promise.resolve(getPopularity(user))),    
-    Promise.resolve(getStarredProjects(submittedUsername)),
+    Promise.resolve(getStarredProjects(submittedUsername)).then((json) => activityChart(json)),
     Promise.resolve(getUserEvents(submittedUsername)),
     
 ])
@@ -80,12 +80,67 @@ function starredRenderer(json) {
 starredArea.appendChild(domFragmentTable);
 }
 }
+function activityChart(json) {
+    console.log(json)
+new Chart(document.getElementById("recent-activity-chart"), {
+    type: 'pie',
+    data: {
+      labels: ["PushEvent", "IssuesEvent", "IssueCommentEvent", "CreateEvent"],
+      datasets: [
+        {
+          label: "Proportion of last 30 events",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          data: json
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Recent Activity'
+      }
+    }
+});
+}
 
 
-// function getUserEvents(username) {
-//     return fetch(`${baseRequest}${username}/events`)
-//     .then(response => response.json());
-// }
+function getUserEvents(username) {
+    return fetch(`${baseRequest}${username}/events`)
+    .then(response => {
+        return response.json()
+    })
+    .then(response2 => {
+        console.log(response2)
+        let pushEvent = 0;
+        let issuesEvent = 0;
+        let issueCommentEvent = 0;
+        let createEvent = 0;
+        let other = 0;
+        response2.forEach((item) => {
+        switch (item.type) {
+            case 'IssuesEvent':
+            issuesEvent ++;
+            break;
+            case 'IssueCommentEvent':
+            issueCommentEvent ++;
+            break;
+            case 'PushEvent':
+            pushEvent ++;
+            break;
+            case 'createEvent':
+            createEvent ++;
+            break; 
+            default: 
+            other++;
+            break;
+        }
+        })
+        let array = [pushEvent, issuesEvent, issueCommentEvent, createEvent, other]
+        console.log(array);
+        return array;
+    });
+}
 
 // function eventRenderer(json) {
 //     new Chart(recentActivityArea.querySelector("#recent-activity-chart"),
