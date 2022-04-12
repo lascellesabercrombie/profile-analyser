@@ -17,8 +17,8 @@ form.addEventListener("submit", (e) => {
     const combined = Promise.all([
     Promise.resolve(getUser(submittedUsername)),
     // .then((user) => Promise.resolve(getPopularity(user))),    
-    Promise.resolve(getStarredProjects(submittedUsername)).then((json) => activityChart(json)),
-    Promise.resolve(getUserEvents(submittedUsername)),
+    Promise.resolve(getStarredProjects(submittedUsername)),
+    Promise.resolve(getUserEvents(submittedUsername)).then(array => activityChart(array)),,
     
 ])
     .then(combined => console.log(combined))
@@ -80,8 +80,9 @@ function starredRenderer(json) {
 starredArea.appendChild(domFragmentTable);
 }
 }
-function activityChart(json) {
-    console.log(json)
+
+function activityChart(array) {
+    console.log(array)
 new Chart(document.getElementById("recent-activity-chart"), {
     type: 'pie',
     data: {
@@ -90,7 +91,7 @@ new Chart(document.getElementById("recent-activity-chart"), {
         {
           label: "Proportion of last 30 events",
           backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-          data: json
+          data: array
         }
       ]
     },
@@ -128,7 +129,7 @@ function getUserEvents(username) {
             case 'PushEvent':
             pushEvent ++;
             break;
-            case 'createEvent':
+            case 'CreateEvent':
             createEvent ++;
             break; 
             default: 
@@ -141,13 +142,6 @@ function getUserEvents(username) {
         return array;
     });
 }
-
-// function eventRenderer(json) {
-//     new Chart(recentActivityArea.querySelector("#recent-activity-chart"),
-//         type: 'bar'
-    
-//     )
-// }
 
 //this could be modified by changing /events to /events?page=123&per_page=50
 
