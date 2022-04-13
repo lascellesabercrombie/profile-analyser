@@ -7,7 +7,7 @@ const button = document.querySelector("button");
 const topInfoArea = document.querySelector(".top-info-area");
 const starredArea = document.querySelector(".starred-area");
 const recentActivityArea = document.querySelector(".recent-activity-area");
-
+const repoListArea = document.querySelector(".repo-list-area");
 
 // const Chart = require('chart.js')
 
@@ -15,11 +15,13 @@ form.addEventListener("submit", (e) => {
     e.preventDefault();
     const submittedUsername = usernameInput.value;
     const combined = Promise.all([
-    Promise.resolve(getUser(submittedUsername)),
-    // .then((user) => Promise.resolve(getPopularity(user))),    
+    Promise.resolve(getUser(submittedUsername))
+    .then(response => topInfoRenderer(response)),
+    // .then((user) => Promise.resolve(getPopularity(user))),  
+    Promise.resolve(listRepos(submittedUsername)),  
     Promise.resolve(getStarredProjects(submittedUsername)),
-    Promise.resolve(getUserEvents(submittedUsername)).then(array => activityChart(array)),,
-    
+    Promise.resolve(getUserEvents(submittedUsername))
+    .then(array => activityChart(array))
 ])
     .then(combined => console.log(combined))
     .catch(console.error)
@@ -30,7 +32,6 @@ form.addEventListener("submit", (e) => {
 function getUser(username) {
     return fetch(`${baseRequest}${username}`)
     .then(response => response.json())
-    .then(json => topInfoRenderer(json))
 }
 
 function topInfoRenderer(json) {
@@ -48,6 +49,7 @@ function topInfoRenderer(json) {
             domFragment.querySelector(".blog-link").textContent = json.blog;
         }
         topInfoArea.appendChild(domFragment);
+        return json;
 }
 
 function getStarredProjects(username) {
@@ -82,7 +84,6 @@ starredArea.appendChild(domFragmentTable);
 }
 
 function activityChart(array) {
-    console.log(array)
 new Chart(document.getElementById("recent-activity-chart"), {
     type: 'pie',
     data: {
@@ -138,12 +139,37 @@ function getUserEvents(username) {
         }
         })
         let array = [pushEvent, issuesEvent, issueCommentEvent, createEvent, other]
-        console.log(array);
         return array;
     });
 }
 
-//this could be modified by changing /events to /events?page=123&per_page=50
+//this could be modified by changing /events to e.g. /events?page=123&per_page=50
+
+function listRepos(username) {
+    console.log('oy')
+    return fetch(`${baseRequest}${username}/repos`)
+    .then(response => response.json())
+    .then(json => {
+    console.log(json);
+    const template = document.querySelector('.repo-list');
+    domFragment = template.content.cloneNode(true);
+    json.forEach(repo => {
+        const templateList = domFragment.querySelector(".repo-list-item")
+        domFragmentItem = templateList.content.cloneNode(true);
+        domFragmentItem.querySelector("li").textContent = repo.name;
+        domFragment.querySelector("ul").appendChild(domFragmentItem);
+    })
+    repoListArea.appendChild(domFragment);
+})
+}
+
+
+// }). 
+//     ))
+//     // "https://api.github.com/repos/theoretischja/Pied-Press/contributors"
+//     return cont.json()
+//     }))
+//     }
 
 
 
