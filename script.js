@@ -234,47 +234,6 @@ datasets: [
 })
 }
 
-// function getPopularity (repo) {
-
-// }
-
-
-// }). 
-//     ))
-//     // "https://api.github.com/repos/theoretischja/Pied-Press/contributors"
-//     return cont.json()
-//     }))
-//     }
-
-
-
-
-// function getPopularity(user) {
-//     let forkArray = [];
-//     let starArray = [];
-//     let watchArray = []
-//     fetch(user.repos_url)
-//     .then(response => {response = response.json(); return response})
-//     .then(response => {
-//         response.forEach(response => {
-//         forkArray.push(response.forks_count);
-//         starArray.push(response.stargazers_count);
-//         watchArray.push(response.watchers_count)
-//         })
-//         return [forkArray, starArray, watchArray];
-//     })
-//     .then(array => {
-//         let sum = 0;
-//         for (let i = 0; i< array.length; i++){
-//             for (let i = 0; i< array.length; i++) {
-//                 sum += array[j];
-//             }
-
-//         }
-//     })
-   
-    
-// }
 
 
 // getUser("oliverjam")
