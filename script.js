@@ -157,6 +157,7 @@ function listRepos(username) {
         const templateList = domFragment.querySelector(".repo-list-item")
         domFragmentItem = templateList.content.cloneNode(true);
         domFragmentItem.querySelector("li").textContent = repo.name;
+        domFragmentItem.querySelector("li").setAttribute('id', `repo_${repo.name}`);
         domFragment.querySelector("ul").appendChild(domFragmentItem);
     })
     repoListArea.appendChild(domFragment);
