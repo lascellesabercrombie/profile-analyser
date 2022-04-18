@@ -1,3 +1,5 @@
+// const { Chart } = require("chart.js");
+
 const usernameInput = document.querySelector("#username");
 const baseRequest = `https://api.github.com/users/`
 
@@ -153,16 +155,88 @@ function listRepos(username) {
     console.log(json);
     const template = document.querySelector('.repo-list');
     domFragment = template.content.cloneNode(true);
+    let repoPopArray = [];
     json.forEach(repo => {
         const templateList = domFragment.querySelector(".repo-list-item")
         domFragmentItem = templateList.content.cloneNode(true);
         domFragmentItem.querySelector("li").textContent = repo.name;
         domFragmentItem.querySelector("li").setAttribute('id', `repo_${repo.name}`);
+        let array = [repo.forks_count, repo.stargazers_count, repo.watchers_count, repo.name];
+        repoPopArray.push(array);
         domFragment.querySelector("ul").appendChild(domFragmentItem);
     })
+    console.log(repoPopArray);
+    //repoPopArray will now be an array of arrays, with each array representing a repo
+    let forkArray = [];
+    let starArray = [];
+    let watchArray = [];
+    let nameArray = [];
+    repoPopArray.map(array => {
+        forkArray.push(array[0]);
+        starArray.push(array[1]);
+        watchArray.push(array[2]);
+        nameArray.push(array[3]);
+    })
+        console.log(forkArray);
+        console.log(starArray);
+        console.log(watchArray);
     repoListArea.appendChild(domFragment);
+    //chart template based on https://codepen.io/elisescolaro/details/YaGyMW
+    new Chart(document.getElementById('repo-popularity-chart'), {
+        type: 'bar',
+        data: {
+labels: nameArray,
+datasets: [
+    {
+    label: "forks",
+    backgroundColor: "green",
+    data: forkArray
+},
+{
+    label: "stars",
+    backgroundColor: "yellow",
+    data: starArray
+},
+{
+    label: "watching",
+    backgroundColor: "red",
+    data: watchArray
+}
+],
+        },
+        options: {
+            tooltips: {
+              displayColors: true,
+              callbacks:{
+                mode: 'x',
+              },
+            },
+            scales: {
+              xAxes: [{
+                stacked: true,
+                gridLines: {
+                  display: false,
+                }
+              }],
+              yAxes: [{
+                stacked: true,
+                ticks: {
+                  beginAtZero: true,
+                },
+                type: 'linear',
+              }]
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: { position: 'bottom' },
+      }
+      })
 })
 }
+
+// function getPopularity (repo) {
+
+// }
 
 
 // }). 
