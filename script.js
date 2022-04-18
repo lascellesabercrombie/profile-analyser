@@ -165,7 +165,6 @@ function listRepos(username) {
         repoPopArray.push(array);
         domFragment.querySelector("ul").appendChild(domFragmentItem);
     })
-    console.log(repoPopArray);
     //repoPopArray will now be an array of arrays, with each array representing a repo
     let forkArray = [];
     let starArray = [];
@@ -177,9 +176,6 @@ function listRepos(username) {
         watchArray.push(array[2]);
         nameArray.push(array[3]);
     })
-        console.log(forkArray);
-        console.log(starArray);
-        console.log(watchArray);
     repoListArea.appendChild(domFragment);
     //chart template based on https://codepen.io/elisescolaro/details/YaGyMW
     new Chart(document.getElementById('repo-popularity-chart'), {
