@@ -148,7 +148,6 @@ function getUserEvents(username) {
 //this could be modified by changing /events to e.g. /events?page=123&per_page=50
 
 function listRepos(username) {
-    console.log('oy')
     return fetch(`${baseRequest}${username}/repos`)
     .then(response => response.json())
     .then(json => {
@@ -161,6 +160,12 @@ function listRepos(username) {
         domFragmentItem = templateList.content.cloneNode(true);
         domFragmentItem.querySelector("li").textContent = repo.name;
         domFragmentItem.querySelector("li").setAttribute('id', `repo_${repo.name}`);
+        domFragmentItem.querySelector("li").addEventListener('click', () => {
+            console.log(repo.contributors_url)
+            return fetch (`${repo.contributors_url}`)
+            .then(response => response.json())
+            .then(json => console.log(json));
+        })
         let array = [repo.forks_count, repo.stargazers_count, repo.watchers_count, repo.name];
         repoPopArray.push(array);
         domFragment.querySelector("ul").appendChild(domFragmentItem);
