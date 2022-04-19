@@ -38,7 +38,17 @@ function getUser(username) {
 
 function topInfoRenderer(json) {
         console.log(json);
+        // const topInfo = topInfoArea.querySelectorAll('div');
+        // console.log(topInfo);
+        // console.log(topInfo.length);
+        // if (topInfo.length > 0){
+        //     console.log('ys');
+        //     topInfo.textContent = "";
+        // }
+        // topInfoArea.replaceChildren();
         const template = document.querySelector('.top-info');
+        // template.replaceChildren();
+        // if (template.hasChildren){template.replaceChildren()}
         domFragment = template.content.cloneNode(true);
         domFragment.querySelector("h2").textContent = json.login;
         domFragment.querySelector("img").src = json.avatar_url;
@@ -164,7 +174,50 @@ function listRepos(username) {
             console.log(repo.contributors_url)
             return fetch (`${repo.contributors_url}`)
             .then(response => response.json())
-            .then(json => console.log(json));
+            .then(json => {
+                console.log(json);
+                let contributorArray = [];
+                let contributionArray = [];
+                json.forEach(contributor => {
+                    contributorArray.push(contributor.login);
+                    contributionArray.push(contributor.contributions)
+                })
+                console.log(contributorArray);
+                console.log(contributionArray);
+                let templateContributorChartArea = document.querySelector(".contributor-chart-area");
+                console.log(templateContributorChartArea);
+                let domChart = templateContributorChartArea.content.cloneNode(true); 
+                let ctx = domChart.querySelector("canvas");
+                console.log(ctx);
+                console.log(e.target)
+                let contributionChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                      labels: contributorArray,
+                      datasets: [
+                        {
+                          label: "Proportion of contributions",
+                          backgroundColor: ["#3e95cd", "#8e5ea2"],
+                          data: contributionArray
+                        }
+                      ]
+                    },
+                    options: {
+                      legend: { display: false },
+                      title: {
+                        display: true,
+                        text: 'Contributors'
+                      }
+                    }
+                })
+                e.target.appendChild(contributionChart);
+
+
+
+
+
+
+            });
         })
         let array = [repo.forks_count, repo.stargazers_count, repo.watchers_count, repo.name];
         repoPopArray.push(array);
@@ -183,7 +236,9 @@ function listRepos(username) {
     })
     repoListArea.appendChild(domFragment);
     //chart template based on https://codepen.io/elisescolaro/details/YaGyMW
-    new Chart(document.getElementById('repo-popularity-chart'), {
+    let canvas = document.getElementById('repo-popularity-chart');
+    console.log(canvas);
+    new Chart(canvas, {
         type: 'bar',
         data: {
 labels: nameArray,
