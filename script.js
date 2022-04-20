@@ -141,8 +141,13 @@ function getUserEvents(username) {
 
 //function to make chart from user events
 
-function activityChart(array) {
-    new Chart(document.getElementById("recent-activity-chart"), {
+let activityChart;
+
+function activityChartMaker(array) {
+    if (typeof activityChart !== 'undefined'){
+        activityChart.destroy();
+    }
+   activityChart = new Chart(document.getElementById("recent-activity-chart"), {
         type: 'pie',
         data: {
           labels: ["PushEvent", "IssuesEvent", "IssueCommentEvent", "CreateEvent"],
@@ -198,7 +203,7 @@ function listRepos(username) {
     })
     repoListArea.appendChild(domFragment);
     //chart template based on https://codepen.io/elisescolaro/details/YaGyMW
-    popularityChart(nameArray, forkArray, starArray, watchArray);
+    popularityChartMaker(nameArray, forkArray, starArray, watchArray);
 })
 }
 
@@ -220,13 +225,19 @@ function displayContributors(repo) {
             console.log(contributorArray);
             console.log(contributionArray);
 
-            contributorChart(contributorArray, contributionArray)
+            contributorChartMaker(contributorArray, contributionArray)
 })}
 
 //function to make a pie chart of contributors to repo
 
-function contributorChart(contributorArray, contributionArray) {
-    new Chart(document.getElementById('contributor-chart'), {
+let contributorChart;
+//probably only works with two contributors colourwise?
+//should disappear when you search a new user?
+function contributorChartMaker(contributorArray, contributionArray) {
+    if (typeof contributorChart !== 'undefined'){
+        contributorChart.destroy();
+    }
+    contributorChart = new Chart(document.getElementById('contributor-chart'), {
         type: 'pie',
         data: {
           labels: contributorArray,
@@ -250,8 +261,12 @@ function contributorChart(contributorArray, contributionArray) {
 
 // function to make stacked bar chart of repos' popularity
 
-function popularityChart(nameArray, forkArray, starArray, watchArray) {
-new Chart(document.getElementById('repo-popularity-chart'), {
+let popularityChart;
+function popularityChartMaker(nameArray, forkArray, starArray, watchArray) {
+    if (typeof popularityChart !== 'undefined'){
+        popularityChart.destroy();
+    }
+    popularityChart = new Chart(document.getElementById('repo-popularity-chart'), {
     type: 'bar',
     data: {
 labels: nameArray,
