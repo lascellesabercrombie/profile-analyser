@@ -12,6 +12,7 @@ const repoListArea = document.querySelector(".repo-list-area");
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
+    formClearer();
     const submittedUsername = usernameInput.value;
     const combined = Promise.all([
     Promise.resolve(getUser(submittedUsername))
@@ -20,13 +21,23 @@ form.addEventListener("submit", (e) => {
     Promise.resolve(listRepos(submittedUsername)),  
     Promise.resolve(getStarredProjects(submittedUsername)),
     Promise.resolve(getUserEvents(submittedUsername))
-    .then(array => activityChart(array))
+    .then(array => activityChartMaker(array))
 ])
     .then(combined => console.log(combined))
     .catch(console.error)
 });
 
-
+function formClearer() {
+    if (topInfoArea.querySelector(".top-info-div")) {
+        topInfoArea.querySelector(".top-info-div").remove();
+    };
+    if (starredArea.querySelectorAll("div")) {
+        starredArea.querySelectorAll("div").forEach(div => div.remove());
+    }
+    if (repoListArea.querySelectorAll("ul")) {
+        repoListArea.querySelectorAll("ul").forEach(list => list.remove());
+    }
+}
 
 function getUser(username) {
     return fetch(`${baseRequest}${username}`)
