@@ -16,7 +16,7 @@
    </form>
    <section class="top-info-area">
         <template class="top-info">
-            <div>
+            <div class="top-info-div">
             <h2></h2>
             <img alt="">
             <p class="repo-number"></p>
@@ -31,10 +31,13 @@
     </section>
     <section class="starred-area">
         <template class="no-stars">
+            <div class="no-stars-div">
             <h2>This user has no starred repos</h2>
+            </div>
         </template>
         <template class="starred-table">
-           <h2>Starred Repos</h2>
+           <div class="stars-div">
+            <h2>Starred Repos</h2>
             <table style="width:100%">
                 <thead>
                 <tr>
@@ -45,7 +48,8 @@
             </thead>
             <tbody>
             </tbody>
-        </table>
+            </table>
+            </div>
         </template>
         <template class="starred-row">
             <tr>
