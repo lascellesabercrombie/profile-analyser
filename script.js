@@ -89,6 +89,7 @@ function starredRenderer(json) {
         td[0].querySelector("a").href = project.owner.html_url;
         td[1].querySelector("a").textContent = project.name;
         td[1].querySelector("a").href = project.html_url;
+        td[2].textContent = (project.description !== null) ? project.description : "n/a";
     tbody.appendChild(domFragmentRow);
     })
 starredArea.appendChild(domFragmentTable);
@@ -185,7 +186,7 @@ function listRepos(username) {
                 console.log(contributorArray);
                 console.log(contributionArray);
 
-                new Chart(document.getElementById('repo-popularity-chart'), {
+                new Chart(document.getElementById('contributor-chart'), {
                     type: 'pie',
                     data: {
                       labels: contributorArray,
@@ -232,7 +233,6 @@ function listRepos(username) {
     repoListArea.appendChild(domFragment);
     //chart template based on https://codepen.io/elisescolaro/details/YaGyMW
     let canvas = document.getElementById('repo-popularity-chart');
-    console.log(canvas);
     new Chart(canvas, {
         type: 'bar',
         data: {
