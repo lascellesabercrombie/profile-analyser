@@ -163,7 +163,7 @@ function activityChart(array) {
     });
     }
 
-//function to get a list of user's repos
+//function to get a list of user's repos and info for popularity chart
 
 function listRepos(username) {
     return fetch(`${baseRequest}${username}/repos`)
@@ -178,54 +178,12 @@ function listRepos(username) {
         domFragmentItem = templateList.content.cloneNode(true);
         domFragmentItem.querySelector("li").textContent = repo.name;
         domFragmentItem.querySelector("li").setAttribute('id', `repo_${repo.name}`);
-        domFragmentItem.querySelector("li").addEventListener('click', () => {
-            console.log(repo.contributors_url)
-            return fetch (`${repo.contributors_url}`)
-            .then(response => response.json())
-            .then(json => {
-                console.log(json);
-                let contributorArray = [];
-                let contributionArray = [];
-                json.forEach(contributor => {
-                    contributorArray.push(contributor.login);
-                    contributionArray.push(contributor.contributions)
-                })
-                console.log(contributorArray);
-                console.log(contributionArray);
+        domFragmentItem.querySelector("li").addEventListener('click', () => displayContributors(repo)) 
 
-                new Chart(document.getElementById('contributor-chart'), {
-                    type: 'pie',
-                    data: {
-                      labels: contributorArray,
-                      datasets: [
-                        {
-                          label: "Proportion of contributions",
-                          backgroundColor: ["#3e95cd", "#8e5ea2"],
-                          data: contributionArray
-                        }
-                      ]
-                    },
-                    options: {
-                      legend: { display: false },
-                      title: {
-                        display: true,
-                        text: 'Contributors'
-                      }
-                    }
-                })
-                // e.target.appendChild(contributionChart);
-
-
-
-
-
-
-            });
-        })
         let array = [repo.forks_count, repo.stargazers_count, repo.watchers_count, repo.name];
         repoPopArray.push(array);
         domFragment.querySelector("ul").appendChild(domFragmentItem);
-    })
+    });
     //repoPopArray will now be an array of arrays, with each array representing a repo
     let forkArray = [];
     let starArray = [];
@@ -239,55 +197,106 @@ function listRepos(username) {
     })
     repoListArea.appendChild(domFragment);
     //chart template based on https://codepen.io/elisescolaro/details/YaGyMW
-    let canvas = document.getElementById('repo-popularity-chart');
-    new Chart(canvas, {
-        type: 'bar',
-        data: {
-labels: nameArray,
-datasets: [
-    {
-    label: "forks",
-    backgroundColor: "green",
-    data: forkArray
-},
-{
-    label: "stars",
-    backgroundColor: "yellow",
-    data: starArray
-},
-{
-    label: "watching",
-    backgroundColor: "red",
-    data: watchArray
+    popularityChart(nameArray, forkArray, starArray, watchArray);
+})
 }
-],
+
+//accesses info on repo contributors to feed into graph function
+
+function displayContributors(repo) {
+
+        console.log(repo.contributors_url)
+        return fetch (`${repo.contributors_url}`)
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            let contributorArray = [];
+            let contributionArray = [];
+            json.forEach(contributor => {
+                contributorArray.push(contributor.login);
+                contributionArray.push(contributor.contributions)
+            })
+            console.log(contributorArray);
+            console.log(contributionArray);
+
+            contributorChart(contributorArray, contributionArray)
+})}
+
+//function to make a pie chart of contributors to repo
+
+function contributorChart(contributorArray, contributionArray) {
+    new Chart(document.getElementById('contributor-chart'), {
+        type: 'pie',
+        data: {
+          labels: contributorArray,
+          datasets: [
+            {
+              label: "Proportion of contributions",
+              backgroundColor: ["#3e95cd", "#8e5ea2"],
+              data: contributionArray
+            }
+          ]
         },
         options: {
-            tooltips: {
-              displayColors: true,
-              callbacks:{
-                mode: 'x',
-              },
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Contributors'
+          }
+        }
+    })
+}
+
+// function to make stacked bar chart of repos' popularity
+
+function popularityChart(nameArray, forkArray, starArray, watchArray) {
+new Chart(document.getElementById('repo-popularity-chart'), {
+    type: 'bar',
+    data: {
+labels: nameArray,
+datasets: [
+{
+label: "forks",
+backgroundColor: "green",
+data: forkArray
+},
+{
+label: "stars",
+backgroundColor: "yellow",
+data: starArray
+},
+{
+label: "watching",
+backgroundColor: "red",
+data: watchArray
+}
+],
+    },
+    options: {
+        tooltips: {
+          displayColors: true,
+          callbacks:{
+            mode: 'x',
+          },
+        },
+        scales: {
+          xAxes: [{
+            stacked: true,
+            gridLines: {
+              display: false,
+            }
+          }],
+          yAxes: [{
+            stacked: true,
+            ticks: {
+              beginAtZero: true,
             },
-            scales: {
-              xAxes: [{
-                stacked: true,
-                gridLines: {
-                  display: false,
-                }
-              }],
-              yAxes: [{
-                stacked: true,
-                ticks: {
-                  beginAtZero: true,
-                },
-                type: 'linear',
-              }]
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: { position: 'bottom' },
-      }
-      })
-})
+            type: 'linear',
+          }]
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: { position: 'bottom' },
+  }
+  })
 }
