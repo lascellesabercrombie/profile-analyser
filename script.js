@@ -1,5 +1,3 @@
-// const { Chart } = require("chart.js");
-
 const usernameInput = document.querySelector("#username");
 const baseRequest = `https://api.github.com/users/`
 
@@ -11,7 +9,6 @@ const starredArea = document.querySelector(".starred-area");
 const recentActivityArea = document.querySelector(".recent-activity-area");
 const repoListArea = document.querySelector(".repo-list-area");
 
-// const Chart = require('chart.js')
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -35,6 +32,8 @@ function getUser(username) {
     return fetch(`${baseRequest}${username}`)
     .then(response => response.json())
 }
+
+//presents key information on searched user
 
 function topInfoRenderer(json) {
         console.log(json);
@@ -64,11 +63,15 @@ function topInfoRenderer(json) {
         return json;
 }
 
+//accesses user's starred projects
+
 function getStarredProjects(username) {
 return fetch(`${baseRequest}${username}/starred`)
    .then(response => response.json())
    .then(json => starredRenderer(json));
 }
+
+//presents user's starred projects in a table
 
 function starredRenderer(json) {
     console.log(json);
@@ -96,29 +99,8 @@ starredArea.appendChild(domFragmentTable);
 }
 }
 
-function activityChart(array) {
-new Chart(document.getElementById("recent-activity-chart"), {
-    type: 'pie',
-    data: {
-      labels: ["PushEvent", "IssuesEvent", "IssueCommentEvent", "CreateEvent"],
-      datasets: [
-        {
-          label: "Proportion of last 30 events",
-          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-          data: array
-        }
-      ]
-    },
-    options: {
-      legend: { display: false },
-      title: {
-        display: true,
-        text: 'Recent Activity'
-      }
-    }
-});
-}
-
+// function to get and organise user's last 30 events
+//fetch request could be modified by changing /events to e.g. /events?page=123&per_page=50
 
 function getUserEvents(username) {
     return fetch(`${baseRequest}${username}/events`)
@@ -156,7 +138,32 @@ function getUserEvents(username) {
     });
 }
 
-//this could be modified by changing /events to e.g. /events?page=123&per_page=50
+//function to make chart from user events
+
+function activityChart(array) {
+    new Chart(document.getElementById("recent-activity-chart"), {
+        type: 'pie',
+        data: {
+          labels: ["PushEvent", "IssuesEvent", "IssueCommentEvent", "CreateEvent"],
+          datasets: [
+            {
+              label: "Proportion of last 30 events",
+              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+              data: array
+            }
+          ]
+        },
+        options: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Recent Activity'
+          }
+        }
+    });
+    }
+
+//function to get a list of user's repos
 
 function listRepos(username) {
     return fetch(`${baseRequest}${username}/repos`)
@@ -284,15 +291,3 @@ datasets: [
       })
 })
 }
-
-
-
-// getUser("oliverjam")
-// // .then(getStarredProjects)
-// // .then(getUserEvents)
-// .then(console.log)
-// .catch(console.error);
-
-// getUserEvents('lascellesabercrombie')
-// .then(console.log)
-// .catch(console.error)
