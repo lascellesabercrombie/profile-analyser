@@ -184,13 +184,8 @@ function listRepos(username) {
                 })
                 console.log(contributorArray);
                 console.log(contributionArray);
-                let templateContributorChartArea = document.querySelector(".contributor-chart-area");
-                console.log(templateContributorChartArea);
-                let domChart = templateContributorChartArea.content.cloneNode(true); 
-                let ctx = domChart.querySelector("canvas");
-                console.log(ctx);
-                console.log(e.target)
-                let contributionChart = new Chart(ctx, {
+
+                new Chart(document.getElementById('repo-popularity-chart'), {
                     type: 'pie',
                     data: {
                       labels: contributorArray,
@@ -210,7 +205,7 @@ function listRepos(username) {
                       }
                     }
                 })
-                e.target.appendChild(contributionChart);
+                // e.target.appendChild(contributionChart);
 
 
 
