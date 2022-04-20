@@ -48,17 +48,7 @@ function getUser(username) {
 
 function topInfoRenderer(json) {
         console.log(json);
-        // const topInfo = topInfoArea.querySelectorAll('div');
-        // console.log(topInfo);
-        // console.log(topInfo.length);
-        // if (topInfo.length > 0){
-        //     console.log('ys');
-        //     topInfo.textContent = "";
-        // }
-        // topInfoArea.replaceChildren();
         const template = document.querySelector('.top-info');
-        // template.replaceChildren();
-        // if (template.hasChildren){template.replaceChildren()}
         domFragment = template.content.cloneNode(true);
         domFragment.querySelector("h2").textContent = json.login;
         domFragment.querySelector("img").src = json.avatar_url;
