@@ -50,15 +50,19 @@ function topInfoRenderer(json) {
         console.log(json);
         const template = document.querySelector('.top-info');
         domFragment = template.content.cloneNode(true);
-        domFragment.querySelector("h2").textContent = json.login;
+        domFragment.querySelector("h2").textContent = `username: ${json.login}`;
         domFragment.querySelector("img").src = json.avatar_url;
-        domFragment.querySelector(".repo-number").textContent = json.public_repos;
-        domFragment.querySelector(".github-link").textContent = json.html_url;
+        domFragment.querySelector(".repo-number").textContent = `public repos: ${json.public_repos}`;
+        domFragment.querySelector(".github-link").setAttribute("href", json.html_url);
         if (json.twitter_username !== null) {
-            domFragment.querySelector(".twitter-link").textContent = json.twitter_username;
+            domFragment.querySelector(".twitter-link").setAttribute("href", json.twitter_username);
+            domFragment.querySelector(".twitter-link").classList.remove("hidden")
+            domFragment.querySelector(".twitter-link").classList.add("visible");
         }
         if (json.blog.length > 0) {
-            domFragment.querySelector(".blog-link").textContent = json.blog;
+            domFragment.querySelector(".blog-link").setAttribute("href", json.blog);
+            domFragment.querySelector(".blog-link").classList.remove("hidden");
+            domFragment.querySelector(".blog-link").classList.add("visible");
         }
         topInfoArea.appendChild(domFragment);
         return json;
@@ -170,6 +174,7 @@ function activityChartMaker(array) {
     }
 
 //function to get a list of user's repos and info for popularity chart
+//displays up to 30; like events, fetch request could probably be modified to get more/fewer/different repos
 
 function listRepos(username) {
     return fetch(`${baseRequest}${username}/repos`)
