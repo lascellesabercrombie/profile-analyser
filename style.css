@@ -16,3 +16,20 @@ body {
     font-family: var(--primary-font);
     text-align: center;
 }
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.small-image {
+    width: 3rem;
+    height: auto;
+}
+
+.xxx-large-text {
+    font-size: xxx-large;
+}
