@@ -1,0 +1,18 @@
+:root {
+    --primary-color: white;
+    --secondary-color: rgb(44, 54, 126);
+    --tertiary-color: rgb(246, 248, 250);
+    --primary-font: "Exo 2", sans-serif;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body {
+    background-color: var(--tertiary-color);
+    font-family: var(--primary-font);
+    text-align: center;
+}
