@@ -17,11 +17,11 @@
     <input id="username">
     <button type="submit">Get information</button>
    </form>
-   <section class="top-info-area">
+   <section class="top-info-area white-background">
         <template class="top-info">
             <div class="top-info-div">
             <h2></h2>
-            <img alt="user's GitHub profile picture">
+            <img class="blue-border" alt="user's GitHub profile picture">
             <p class="repo-number"></p>
             <p class="followers-and-following"></p>
             <p class="links">
@@ -65,11 +65,12 @@
     <section class="recent-activity-area">
         <canvas id="recent-activity-chart" width="800" height="450"></canvas>
     </section>
-    <section class="repo-list-area">
+    <section class="repo-list-area white-background">
         <template class="repo-list">
             <div class="repo-list-div">
             <h2>🪐 List of Public Repos</h2>
-            <p>NB: if the user has more than 30 public repos, this app displays the 30 most recent</p>
+            <p>#1 if the user has more than 30 public repos, this app displays the 30 most recent</p>
+            <p>#2 click on a repo to see contributors</p>
             <ul>
                 <template class="repo-list-item">
                     <li></li>
@@ -78,7 +79,7 @@
         </div>
         </template>
     </section>
-    <section class="contributor-chart-area">
+    <section class="contributor-chart-area white-background hidden">
         <canvas id="contributor-chart" width="800" height="450"></canvas>
     </section>
     <section class="repo-popularity-chart-area">
