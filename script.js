@@ -37,6 +37,8 @@ function formClearer() {
     if (repoListArea.querySelectorAll("div")) {
         repoListArea.querySelectorAll("div").forEach(list => list.remove());
     }
+    document.querySelector(".contributor-chart-area").classList.remove("visible");
+        document.querySelector(".contributor-chart-area").classList.add("hidden");
 }
 
 function getUser(username) {
@@ -217,6 +219,8 @@ function listRepos(username) {
 function displayContributors(repo) {
 
         console.log(repo.contributors_url)
+        document.querySelector(".contributor-chart-area").classList.remove("hidden");
+        document.querySelector(".contributor-chart-area").classList.add("visible");
         return fetch (`${repo.contributors_url}`)
         .then(response => response.json())
         .then(json => {
