@@ -42,3 +42,11 @@ ul {
     display: inline-block;
     text-align: left;
 }
+
+.white-background {
+    background-color: var(--primary-color)
+}
+
+.blue-border {
+    border: 3px solid var(--secondary-color)
+}
