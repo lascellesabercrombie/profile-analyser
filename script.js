@@ -34,8 +34,8 @@ function formClearer() {
     if (starredArea.querySelectorAll("div")) {
         starredArea.querySelectorAll("div").forEach(div => div.remove());
     }
-    if (repoListArea.querySelectorAll("ul")) {
-        repoListArea.querySelectorAll("ul").forEach(list => list.remove());
+    if (repoListArea.querySelectorAll("div")) {
+        repoListArea.querySelectorAll("div").forEach(list => list.remove());
     }
 }
 
@@ -249,7 +249,7 @@ function contributorChartMaker(contributorArray, contributionArray) {
           datasets: [
             {
               label: "Proportion of contributions",
-              backgroundColor: ["#3e95cd", "#8e5ea2"],
+              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
               data: contributionArray
             }
           ]
@@ -278,17 +278,17 @@ labels: nameArray,
 datasets: [
 {
 label: "forks",
-backgroundColor: "green",
+backgroundColor: "#3e95cd",
 data: forkArray
 },
 {
 label: "stars",
-backgroundColor: "yellow",
+backgroundColor: "#8e5ea2",
 data: starArray
 },
 {
 label: "watching",
-backgroundColor: "red",
+backgroundColor: "#3cba9f",
 data: watchArray
 }
 ],
