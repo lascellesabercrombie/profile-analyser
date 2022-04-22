@@ -33,3 +33,12 @@ body {
 .xxx-large-text {
     font-size: xxx-large;
 }
+
+.repo-list-div {
+    text-align: center;
+}
+
+ul { 
+    display: inline-block;
+    text-align: left;
+}
